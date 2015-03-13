@@ -1,0 +1,94 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "2ababbd1d8bcdc4e489021e43199b3ee",
+    "packages": [
+        {
+            "name": "concisecss/concise.css",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ConciseCSS/concise.css.git",
+                "reference": "1e093f3c26b13e08d1cb1836088fa0752db0af31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ConciseCSS/concise.css/zipball/1e093f3c26b13e08d1cb1836088fa0752db0af31",
+                "reference": "1e093f3c26b13e08d1cb1836088fa0752db0af31",
+                "shasum": ""
+            },
+            "replace": {
+                "concisecss/concise.css": "self.version"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Keenan Payne",
+                    "email": "contact@keenanpayne.com"
+                }
+            ],
+            "description": "A lightweight front-end framework that provides functionality without the bloat.",
+            "homepage": "http://concisecss.com",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "mobile-first",
+                "responsive",
+                "sass",
+                "scss",
+                "web"
+            ],
+            "time": "2015-02-17 06:23:04"
+        },
+        {
+            "name": "m6w6/pharext",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/m6w6/pharext.git",
+                "reference": "e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/m6w6/pharext/zipball/e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c",
+                "reference": "e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/pharext",
+                "bin/pharext.pubkey"
+            ],
+            "type": "project",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "Package PHP extensions as self-installing PHARs",
+            "keywords": [
+                "ext",
+                "extension",
+                "install",
+                "package",
+                "phar"
+            ],
+            "time": "2015-03-10 10:38:16"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

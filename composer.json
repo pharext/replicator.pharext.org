@@ -1,0 +1,6 @@
+{
+    "require": {
+        "m6w6/pharext": "~2.0",
+        "concisecss/concise.css": "~2.1"
+    }
+}

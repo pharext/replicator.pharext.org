@@ -1,0 +1,10 @@
+/nbproject/
+build/replicator.key
+*~
+tmp*
+*.tmp
+public/phars/*
+!public/phars/.gitkeep
+build/*
+!build/.gitkeep
+vendor
