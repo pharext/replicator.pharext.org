@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Replicator</title>
 		<link rel="stylesheet" href="concise/css/concise.min.css">
-		<link href='//fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+		<link href="//fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 			body {

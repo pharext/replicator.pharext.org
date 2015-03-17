@@ -1,0 +1,14 @@
+#!/usr/bin/php
+<?php
+
+ini_set("display_errors", 0);
+ini_set("log_errors", 1);
+
+$what = !empty($argv[1]) ? $argv[1] : "latest";
+
+if (($sxe = simplexml_load_file("http://pecl.php.net/feeds/$what.rss"))) {
+	foreach ($sxe->item as $item) {
+		$url = (string) $item->link;
+		printf("%s\t%s\t%s\n", basename(dirname($url)), basename($url), $url);
+	}
+}
