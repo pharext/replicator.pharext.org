@@ -63,7 +63,12 @@
 			</header>
 		</div>
 		<div class="container">
-			<?php $packages = array_map("basename", glob("phars/*")); ?>
+			<?php 
+			
+			$packages = array_map("basename", glob("phars/*", GLOB_NOSORT|GLOB_ONLYDIR)); 
+			sort($packages, SORT_NATURAL|SORT_FLAG_CASE);
+
+			?>
 			
 			<?php if ($_SERVER["QUERY_STRING"] && in_array($_SERVER["QUERY_STRING"], $packages, true)) : ?>
 
