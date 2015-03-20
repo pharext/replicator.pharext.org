@@ -8,18 +8,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 			body {
+				padding-bottom: 4em;
 			}
-			.header {
-				background: rgba(0,128,196,0.5);
+			.footer {
+				bottom: 0;
+				position: fixed;
+				width: 100%;
+				text-align: center;
+			}
+			.header, .footer {
+				background: #62B3E7;
 				padding: 1em 0;
 			}
 			.header h1 {
 				font-weight: bold;
 			}
-			.header h1 a {
+			.header h1 a, .footer a:hover {
 				text-decoration: none;
 			}
-			.header h1 big {
+			.header h1 a:hover {
+				text-decoration: underline;
+			}
+			.header h1 big , .footer, .footer a {
 				color: #fdfdfd;
 				text-shadow: grey 0 0 .1em;
 			}
@@ -39,6 +49,7 @@
 					<a href="?"><big>Replicator</big></a><br>
 					<small>Replicating PECL releases as pharext packages since 2015</small>
 				</h1>
+				<a href="https://github.com/m6w6/replicator"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
 			</header>
 		</div>
 		<div class="container">
@@ -57,8 +68,10 @@
 				</thead>
 				<tbody>
 					<?php foreach (array_reverse(glob("phars/$package/*.ext.phar*")) as $phar) : ?>
+
 					<tr>
-						<td class="text-left"><a href="<?= htmlspecialchars($phar) ?>"
+						<td class="text-left">
+							<a href="<?= htmlspecialchars($phar) ?>"
 							   ><?= htmlspecialchars(basename($phar)) ?></a>
 						</td>
 						<td class="text-left">
@@ -88,6 +101,7 @@
 							} while (false);
 							
 							?>
+
 						</td>
 						<td class="text-right">
 							<?php
@@ -101,6 +115,7 @@
 						</td>
 					</tr>
 					<?php endforeach; ?>
+
 				</tbody>
 			</table>
 			<?php else:	?>
@@ -122,6 +137,11 @@
 			</ul>
 			<?php endif; ?>
 
+		</div>
+		<div class="footer">
+			<footer>
+				&copy; 2015 m6w6, Michael Wallner 
+			</footer>
 		</div>
 	</body>
 </html>
