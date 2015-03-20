@@ -9,14 +9,20 @@
 		<style>
 			body {
 				padding-bottom: 4em;
+				padding-top: 10em;
+			}
+			.header {
+				top: 0;
+				width: 100%;
 			}
 			.footer {
 				bottom: 0;
-				position: fixed;
 				width: 100%;
 				text-align: center;
 			}
 			.header, .footer {
+				position: fixed;
+				box-shadow: 0px 0px 1em .4em #89a;
 				background: #62B3E7;
 				padding: 1em 0;
 			}
@@ -29,7 +35,11 @@
 			.header h1 a:hover {
 				text-decoration: underline;
 			}
-			.header h1 big , .footer, .footer a {
+			.header h1 big {
+				/* normalize browser difference */
+				font-size: 1.8em;
+			}
+			.header h1 big, .footer, .footer a {
 				color: #fdfdfd;
 				text-shadow: grey 0 0 .1em;
 			}
