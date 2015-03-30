@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ababbd1d8bcdc4e489021e43199b3ee",
+    "hash": "d612932710d4d8912e7fdabc8f15eefc",
     "packages": [
         {
             "name": "concisecss/concise.css",
@@ -51,16 +51,16 @@
         },
         {
             "name": "m6w6/pharext",
-            "version": "v2.0.1",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/m6w6/pharext.git",
-                "reference": "e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c"
+                "reference": "ed04a43b069862b5b0744de14c405ffcc5db4e67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/m6w6/pharext/zipball/e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c",
-                "reference": "e3ff870fe1f8a3b3eb8f55eea68f6f61d99e640c",
+                "url": "https://api.github.com/repos/m6w6/pharext/zipball/ed04a43b069862b5b0744de14c405ffcc5db4e67",
+                "reference": "ed04a43b069862b5b0744de14c405ffcc5db4e67",
                 "shasum": ""
             },
             "bin": [
@@ -80,7 +80,7 @@
                 "package",
                 "phar"
             ],
-            "time": "2015-03-10 10:38:16"
+            "time": "2015-03-30 20:10:13"
         }
     ],
     "packages-dev": [],

@@ -12,6 +12,7 @@ $procs = [];
 $client = new Client;
 $client->setOptions([
 	"timetout" => 60,
+	"redirect" => 1,
 	"connecttimeout" => 6
 ]);
 
