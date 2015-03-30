@@ -79,6 +79,7 @@
 						<th class="text-left">Package</th>
 						<th class="text-left">Date</th>
 						<th class="text-right">Size</th>
+						<th class="text-right">Pharext</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -128,6 +129,17 @@
 
 							?>
 						</td>
+						<td class="text-right">
+							<?php
+							$data = new Phar($phar);
+							$meta = $data->getMetadata();
+							if ($meta) {
+								printf("v%s\n", $meta["version"]);
+							} else {
+								print "v2.0.1\n";
+							}
+							?>
+						</td>
 					</tr>
 					<?php endforeach; ?>
 
@@ -155,7 +167,12 @@
 		</div>
 		<div class="footer">
 			<footer>
-				&copy; 2015 m6w6, Michael Wallner 
+				&copy; 2015 m6w6, Michael Wallner &mdash; Powered by <a href="//github.com/m6w6/pharext">pharext
+					<?php
+					require_once __DIR__."/../vendor/m6w6/pharext/src/pharext/Version.php";
+					printf("v%s\n", pharext\VERSION);
+					?>
+				</a>
 			</footer>
 		</div>
 	</body>
