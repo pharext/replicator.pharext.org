@@ -51,16 +51,16 @@
         },
         {
             "name": "m6w6/pharext",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/m6w6/pharext.git",
-                "reference": "ed04a43b069862b5b0744de14c405ffcc5db4e67"
+                "reference": "3dcc326aa922ce4b70d07049572c6f15a744869c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/m6w6/pharext/zipball/ed04a43b069862b5b0744de14c405ffcc5db4e67",
-                "reference": "ed04a43b069862b5b0744de14c405ffcc5db4e67",
+                "url": "https://api.github.com/repos/m6w6/pharext/zipball/3dcc326aa922ce4b70d07049572c6f15a744869c",
+                "reference": "3dcc326aa922ce4b70d07049572c6f15a744869c",
                 "shasum": ""
             },
             "bin": [
@@ -80,7 +80,7 @@
                 "package",
                 "phar"
             ],
-            "time": "2015-03-30 20:10:13"
+            "time": "2015-04-08 10:17:40"
         }
     ],
     "packages-dev": [],
