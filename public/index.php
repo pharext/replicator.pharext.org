@@ -76,20 +76,57 @@
 			<table class="table table-full">
 				<thead>
 					<tr>
-						<th class="text-left">Package</th>
+						<th class="text-left" colspan="4">Package</th>
 						<th class="text-left">Date</th>
 						<th class="text-right">Size</th>
 						<th class="text-right">Pharext</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach (array_reverse(glob("phars/$package/*.ext.phar*")) as $phar) : ?>
+					
+					<?php
+					
+					$versions = [];
+					foreach (glob("phars/$package/*.ext.phar*") as $phar) {
+						list($name, $enc) = explode(".ext.phar", basename($phar));
+						$data = new Phar($phar);
+						$meta = $data->getMetadata();
+						if ($meta) {
+							$release = $meta["release"];
+						} else {
+							$release = substr($name, strlen($package)+1);
+						}
+						$versions[$release][$enc] = [$phar, $meta];
+						uksort($versions[$release], function($a, $b) {
+							$al = strlen($a);
+							$bl = strlen($b);
+							if ($al < $bl) return -1;
+							if ($al > $bl) return 1;
+							return 0;
+						});
+					}
+					uksort($versions, "version_compare");
+					
+					?>
+					<?php foreach (array_reverse($versions) as $version => $phars) : ?>
 
 					<tr>
 						<td class="text-left">
-							<a href="<?= htmlspecialchars($phar) ?>"
-							   ><?= htmlspecialchars(basename($phar)) ?></a>
+							<?= htmlspecialchars($package) ?>
+							<?= htmlspecialchars($version) ?>
 						</td>
+						
+						<?php foreach ($phars as $ext => list($phar, $meta)) : ?>
+						<td class="text-left">
+							<a href="<?= htmlspecialchars($phar) ?>"
+							   >ext.phar<?= htmlspecialchars($ext) ?></a>
+						</td>
+						<?php endforeach; ?>
+						<?php for($i = 0; $i < 3-count($phars); ++$i) : ?>
+						
+						<td></td>
+						<?php endfor; ?>
+						
 						<td class="text-left">
 							<?php
 
@@ -131,8 +168,6 @@
 						</td>
 						<td class="text-right">
 							<?php
-							$data = new Phar($phar);
-							$meta = $data->getMetadata();
 							if ($meta) {
 								printf("v%s\n", $meta["version"]);
 							} else {
@@ -163,14 +198,14 @@
 			
 			</ul>
 			<?php endif; ?>
-
+			<pre><?php var_dump($versions)?></pre>
 		</div>
 		<div class="footer">
 			<footer>
 				&copy; 2015 m6w6, Michael Wallner &mdash; Powered by <a href="//github.com/m6w6/pharext">pharext
 					<?php
-					require_once __DIR__."/../vendor/m6w6/pharext/src/pharext/Version.php";
-					printf("v%s\n", pharext\VERSION);
+					require_once "../vendor/autoload.php";
+					printf("v%s\n", pharext\Metadata::version());
 					?>
 				</a>
 			</footer>
