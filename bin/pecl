@@ -1,14 +1,81 @@
-#!/usr/bin/php
+#!/usr/bin/php -dphar.readonly=0
 <?php
 
 ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 
 $what = !empty($argv[1]) ? $argv[1] : "latest";
+$pids = [];
+
+function fail($pkg, $ver, $skp, $fmt) {
+	$msg = call_user_func_array("sprintf", array_slice(func_get_args(), 3));
+	fprintf(STDERR, "FAILURE: %s-%s, %s; skipping next time\n", $pkg, $ver, $msg);
+	touch($skp);
+}
+
+function wait(&$pids) {
+	$status = null;
+	switch ($pid = pcntl_wait($status)) {
+		case -1:
+			// meh
+			break;
+		default:
+			extract($pids[$pid]);
+			unset($pids[$pid]);
+			if (pcntl_wifexited($status) && ($rc = pcntl_wexitstatus($status))) {
+				fail($pkg, $ver, $skp, "exit code: %d", $rc);
+			} elseif (pcntl_wifsignaled($status) && ($rc = pcntl_wtermsig($status))) {
+				fail($pkg, $ver, $skp, "signal: %d", $rc);
+			} else {
+				printf("SUCCESS: %s-%s\n", $pkg, $ver);
+			}
+			break;
+	}
+	return $pid > 0;
+};
+
+function work($url, $dir) {
+	is_dir($dir) || mkdir($dir, 0777, true);
+	require_once __DIR__."/../vendor/autoload.php";
+	$packager = new pharext\Packager;
+	$packager->run(5, [
+		$_SERVER["argv"][0], 
+		"-qps", 
+		$url, 
+		"-Zzd", 
+		$dir
+	]);
+};
 
 if (($sxe = simplexml_load_file("http://pecl.php.net/feeds/$what.rss"))) {
 	foreach ($sxe->item as $item) {
 		$url = (string) $item->link;
-		printf("%s\t%s\t%s\n", basename(dirname($url)), basename($url), $url);
+		$pkg = basename(dirname($url));
+		$ver = basename($url);
+		$skp = sprintf("%s/../build/%s-%s.skip", __DIR__, $pkg, $ver);
+		$ext = sprintf("%s/../public/phars/%s/%s-%s.ext.phar", __DIR__, $pkg, $pkg, $ver);
+		$dir = dirname($ext);
+
+		if (!is_file($skp) && !is_file($ext)) {
+			switch ($pid = pcntl_fork()) {
+				case -1:
+					exit;
+				case 0:
+					work($url, $dir);
+					exit;
+				default:
+					$pids[$pid] = compact("url", "pkg", "ver", "skp", "ext", "dir");
+					break;
+			}
+		}
+		
+		if (count($pids) > 5) {
+			wait($pids);
+		}
 	}
+	while (wait($pids))
+		;
+	
 }
+
+
