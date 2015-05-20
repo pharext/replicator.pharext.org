@@ -198,7 +198,6 @@
 			
 			</ul>
 			<?php endif; ?>
-			<pre><?php var_dump($versions)?></pre>
 		</div>
 		<div class="footer">
 			<footer>
