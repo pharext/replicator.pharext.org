@@ -78,7 +78,6 @@
 					<tr>
 						<th class="text-left" colspan="4">Package</th>
 						<th class="text-left">Date</th>
-						<th class="text-right">Size</th>
 						<th class="text-right">Pharext</th>
 					</tr>
 				</thead>
@@ -120,6 +119,14 @@
 						<td class="text-left">
 							<a href="<?= htmlspecialchars($phar) ?>"
 							   >ext.phar<?= htmlspecialchars($ext) ?></a>
+							<small><?php
+
+							$u = ["Bytes", "KB", "MB"];
+							$s = filesize($phar);
+							$l = floor(log10($s));
+							printf("&#10507; %1.1F %s", $s/pow(10,$l-($l%3)), $u[$l/3]);
+
+							?></small>
 						</td>
 						<?php endforeach; ?>
 						<?php for($i = 0; $i < 3-count($phars); ++$i) : ?>
@@ -155,16 +162,6 @@
 							
 							?>
 
-						</td>
-						<td class="text-right">
-							<?php
-
-							$u = ["Bytes", "KB", "MB"];
-							$s = filesize($phar);
-							$l = floor(log10($s));
-							printf("%1.1F %s\n", $s/pow(10,$l-($l%3)), $u[$l/3]);
-
-							?>
 						</td>
 						<td class="text-right">
 							<?php
