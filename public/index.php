@@ -118,7 +118,7 @@
 						<?php foreach ($phars as $ext => list($phar, $meta)) : ?>
 						<td class="text-left">
 							<a href="<?= htmlspecialchars($phar) ?>"
-							   >ext.phar<?= htmlspecialchars($ext) ?></a>
+							   >ext.phar<?= htmlspecialchars($ext) ?></a><br>
 							<small><?php
 
 							$u = ["Bytes", "KB", "MB"];
