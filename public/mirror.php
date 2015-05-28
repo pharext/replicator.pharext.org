@@ -58,7 +58,9 @@ switch ($evt) {
 				}
 			} elseif (mkdir($path, 0755, true) && chdir($path)) {
 				$source = escapeshellarg($json->repository->clone_url);
+				$description = escapeshellarg($json->repository->descrption);
 				passthru("git clone --mirror $source . 2>&1", $rv);
+				passthru("git config gitweb.description $description 2>&1");
 				if ($rv == 0) {
 					$response->setResponseCode(200);
 				}
