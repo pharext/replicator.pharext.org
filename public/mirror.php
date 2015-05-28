@@ -41,30 +41,28 @@ switch ($evt) {
 		$response->setResponseStatus("PONG");
 		break;
 	case "push":
-		if (($json = json_decode($request->getBody()))) {
-			if (in_array($json->repository->owner->name, $owners, true)) {
-				$repo = $json->repository->full_name;
-				$path = $mirror . "/" . $repo;
-				if (is_dir($path) && chdir($path)) {
-					passthru("git fetch -vp 2>&1", $rv);
-					if ($rv == 0) {
-						$response->setResponseCode(200);
-					}
-				} elseif (mkdir($path, 0755, true) && chdir($path)) {
-					$source = escapeshellarg($json->repository->clone_url);
-					passthru("git clone --mirror $source . 2>&1", $rv);
-					if ($rv == 0) {
-						$response->setResponseCode(200);
-					}
-				}
-			} else {
-				$response->setResponseCode(403);
-				$response->getBody()->append("Invalid owner");
-			}
-		} else {
+		if (!($json = json_decode($request->getBody()))) {
 			$response->setResponseCode(415);
 			$response->setContentType($request->getHeader("Content-Type"));
 			$response->getBody()->append($request->getBody());
+		} elseif (!in_array($json->repository->owner->name, $owners, true)) {
+			$response->setResponseCode(403);
+			$response->getBody()->append("Invalid owner");
+		} else {
+			$repo = $json->repository->full_name;
+			$path = $mirror . "/" . $repo;
+			if (is_dir($path) && chdir($path)) {
+				passthru("git fetch -vp 2>&1", $rv);
+				if ($rv == 0) {
+					$response->setResponseCode(200);
+				}
+			} elseif (mkdir($path, 0755, true) && chdir($path)) {
+				$source = escapeshellarg($json->repository->clone_url);
+				passthru("git clone --mirror $source . 2>&1", $rv);
+				if ($rv == 0) {
+					$response->setResponseCode(200);
+				}
+			}
 		}
 		break;
 }
