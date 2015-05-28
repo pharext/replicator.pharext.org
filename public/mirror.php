@@ -46,12 +46,12 @@ switch ($evt) {
 				$repo = $json->repository->full_name;
 				$path = $mirror . "/" . $repo;
 				if (is_dir($path) && chdir($path)) {
-					passthru("git fetch -p", $rv);
+					passthru("git fetch -p 2>&1", $rv);
 					if ($rv == 0) {
 						$response->setResponseCode(200);
 					}
 				} elseif (mkdir($path, 0755, true) && chdir($path)) {
-					passthru("git clone --mirror " . escapeshellarg($repo) . " .", $rv);
+					passthru("git clone --mirror " . escapeshellarg($repo) . " . 2>&1", $rv);
 					if ($rv == 0) {
 						$response->setResponseCode(200);
 					}
