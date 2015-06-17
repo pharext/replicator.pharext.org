@@ -28,6 +28,10 @@ function wait(&$pids) {
 				fail($pkg, $ver, $skp, "signal: %d", $rc);
 			} else {
 				printf("SUCCESS: %s-%s\n", $pkg, $ver);
+				/* create skipfile, ensuring we do not build a package with
+				 * different name in registry/package.xml again
+				 */
+				touch($skp);
 			}
 			break;
 	}
