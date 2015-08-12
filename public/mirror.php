@@ -37,15 +37,12 @@ switch ($evt) {
 		$response->getBody()->append("Not a configured event");
 		break;
 	case "ping";
-		$response->setResponseCode(204);
-		$response->setResponseStatus("PONG");
-		break;
 	case "push":
 		if (!($json = json_decode($request->getBody()))) {
 			$response->setResponseCode(415);
 			$response->setContentType($request->getHeader("Content-Type"));
 			$response->getBody()->append($request->getBody());
-		} elseif (!in_array($json->repository->owner->name, $owners, true)) {
+		} elseif (!in_array(isset($json->repository->owner->name)?$json->repository->owner->name:$json->repository->owner->login, $owners, true)) {
 			$response->setResponseCode(403);
 			$response->getBody()->append("Invalid owner");
 		} else {
