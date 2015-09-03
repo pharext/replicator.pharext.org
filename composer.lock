@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "6536f75724f1b6738b441c05cd7d65e5",
@@ -51,23 +51,30 @@
         },
         {
             "name": "m6w6/pharext",
-            "version": "v4.0.0",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/m6w6/pharext.git",
-                "reference": "d017df1dcb270773804bbed4628397a9c7df30c4"
+                "reference": "03f7c23b5401098e1c157cc0d36628dc449901ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/m6w6/pharext/zipball/d017df1dcb270773804bbed4628397a9c7df30c4",
-                "reference": "d017df1dcb270773804bbed4628397a9c7df30c4",
+                "url": "https://api.github.com/repos/m6w6/pharext/zipball/03f7c23b5401098e1c157cc0d36628dc449901ea",
+                "reference": "03f7c23b5401098e1c157cc0d36628dc449901ea",
                 "shasum": ""
             },
             "bin": [
                 "bin/pharext",
-                "bin/pharext.pubkey"
+                "bin/pharext.pubkey",
+                "bin/pharext.update",
+                "bin/pharext.update.pubkey"
             ],
             "type": "project",
+            "autoload": {
+                "psr-0": {
+                    "pharext": "src"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-2-Clause"
@@ -80,7 +87,7 @@
                 "package",
                 "phar"
             ],
-            "time": "2015-05-20 06:39:24"
+            "time": "2015-09-03 15:12:31"
         }
     ],
     "packages-dev": [],

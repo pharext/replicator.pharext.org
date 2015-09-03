@@ -139,7 +139,7 @@
 
 							$time = time();
 							$dsec = 86400;
-							$lmod = filemtime($phar);
+							$lmod = isset($meta["date"]) ? strtotime($meta["date"]) : filemtime($phar);
 							$days = [1 => "today", "yesterday"];
 							do {
 								for ($i = 1; $i < 7; ++$i) {
