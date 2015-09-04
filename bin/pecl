@@ -4,6 +4,9 @@
 ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 
+/* needed for the packager, so the pharstub task can find includes */
+set_include_path(__DIR__."/../vendor/m6w6/pharext/src:".get_include_path());
+
 $what = !empty($argv[1]) ? $argv[1] : "latest";
 $pids = [];
 
