@@ -1,6 +1,6 @@
 # replicator.pharext.org
 
-[PHARext](https://pharext.org) [replicator](https://replicator.pharext.org).
+[PHARext](https://pharext.org) PECL [replicator](https://replicator.pharext.org).
 
 ## License
 
