@@ -7,4 +7,6 @@ public/phars/*
 !public/phars/.gitkeep
 build/*
 !build/.gitkeep
+skip/*
+!skip/.gitkeep
 vendor

@@ -59,7 +59,7 @@ if (($sxe = simplexml_load_file("http://pecl.php.net/feeds/$what.rss"))) {
 		$url = (string) $item->link;
 		$pkg = basename(dirname($url));
 		$ver = basename($url);
-		$skp = sprintf("%s/../build/%s-%s.skip", __DIR__, $pkg, $ver);
+		$skp = sprintf("%s/../skip/%s/%s", __DIR__, $pkg, $ver);
 		$ext = sprintf("%s/../public/phars/%s/%s-%s.ext.phar", __DIR__, $pkg, $pkg, $ver);
 		$dir = dirname($ext);
 
