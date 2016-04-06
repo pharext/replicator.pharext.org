@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+$log = __DIR__."/../build/gpg-sign-error.log";
+
+ini_set("error_reporting", E_ALL);
+ini_set("display_errors", true);
+ini_set("log_errors", true);
+ini_set("error_log", $log);
+
+if ($argc != 3) {
+	fprintf(STDERR, "Usage: %s <pkg name> <phar path>\n\n", basename($argv[0]));
+	exit(1);
+}
+
+list(, $pkg, $src) = $argv;
+$basename = basename($src);
+$dir = __DIR__."/../public/sigs/$pkg";
+
+if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
+	exit(2);
+}
+
+if (($pwd = getenv("REPLICATOR_PWD"))) {
+	if (!($stream = fopen("php://temp", "r+"))) {
+		exit(4);
+	}
+	fwrite($stream, $pwd);
+	rewind($stream);
+} else {
+	$stream = STDIN;
+}
+
+$proc = proc_open("gpg --batch --no-tty -a --detach-sign --passphrase-fd 3 --output $dir/$basename.asc $src", [
+	["pipe", "r"],
+	["pipe", "w"],
+	["file", $log, "a"],
+	$stream
+], $fds);
+
+if (!is_resource($proc)) {
+	exit(3);
+}
+
+fclose($fds[0]);
+
+fpassthru($fds[1]);
+fclose($fds[1]);
+
+exit(proc_close($proc));

@@ -1,0 +1,43 @@
+#!/bin/sh
+CWD=$(dirname "$0")
+SIGS="asc sig"
+PHARS="$CWD/../public/phars"
+
+test -d "$PWD" || PwD=$(pwd)
+
+checksig() {
+	local phar
+	local sigs
+
+	phar="$1"
+	sigs=$(printf "%s" "$phar" | sed 's/phars\//sigs\//')
+
+	for sig in $SIGS; do
+		local name
+		local file
+		local sign
+
+		if ! test -f "$sigs.$sig"; then
+			name=$(basename "$(dirname \"$phar\")")
+			file=$(realpath --relative-to="$PWD" "$phar")
+
+			case "$sig" in
+			asc)
+				sign=$(realpath --relative-to="$PWD" "$CWD/gpg-sign")
+				;;
+			sig)
+				sign=$(realpath --relative-to="$PWD" "$CWD/rsa-sign")
+				;;
+			esac
+			echo "'$sign'" "'$name'" "'$file'"
+		fi
+	done
+}
+checksigs() {
+	local phar
+	while read phar; do
+		checksig $phar
+	done
+}
+
+find $PHARS -type f -name '*.ext.phar*' | checksigs

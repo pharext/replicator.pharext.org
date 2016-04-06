@@ -5,8 +5,12 @@ tmp*
 *.tmp
 public/phars/*
 !public/phars/.gitkeep
+public/sigs/*
+!public/sigs/.gitkeep
 build/*
 !build/.gitkeep
 skip/*
 !skip/.gitkeep
 vendor
+composer.phar
+.gnupg/
