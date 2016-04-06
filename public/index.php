@@ -5,6 +5,7 @@ use http\Env\Response;
 use http\Header;
 
 const UNITS = ["Bytes", "KB", "MB"];
+const SIGS = ["rsa" => "sig", "gpg" => "asc"];
 
 function human_size($s) {
 	$l = floor(log10($s));
@@ -28,6 +29,10 @@ function human_date($t) {
 	return gmdate("Y-m-d", $t);
 }
 
+function sigof($phar, $typ) {
+	return str_replace("phars/", "sigs/", $phar) . ".$typ";
+}
+
 function package_versions($package) {
 	$versions = [];
 	foreach (glob("phars/$package/*.ext.phar*") as $phar) {
@@ -40,10 +45,15 @@ function package_versions($package) {
 			$release = substr($name, strlen($package)+1);
 		}
 
+		foreach (SIGS as $sigtyp => $sigext) {
+			if (file_exists($sigdat = sigof($phar, $sigext))) {
+				$sigs[$sigtyp] = $sigdat;
+			}
+		}
 		$size = filesize($phar);
 		$date = isset($meta["date"]) ? strtotime($meta["date"]) : filemtime($phar);
 		$pharext = isset($meta["version"]) ? $meta["version"] : "2.0.1";
-		$versions[$release][$enc] = compact("phar", "date", "size", "pharext");
+		$versions[$release][$enc] = compact("phar", "date", "size", "pharext", "sigs");
 		uksort($versions[$release], function($a, $b) {
 			$al = strlen($a);
 			$bl = strlen($b);
