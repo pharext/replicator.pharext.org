@@ -70,9 +70,9 @@ function work($url, $dir) {
 	]);
 };
 
-if (($sxe = simplexml_load_file("http://pecl.php.net/feeds/$what.rss"))) {
+if (($sxe = simplexml_load_file("https://pecl.php.net/feeds/$what.rss"))) {
 	foreach ($sxe->item as $item) {
-		$url = (string) $item->link;
+		$url = str_replace("http://", "https://", (string) $item->link);
 		$pkg = basename(dirname($url));
 		$ver = basename($url);
 		$skp = sprintf("%s/../skip/%s/%s", __DIR__, $pkg, $ver);
