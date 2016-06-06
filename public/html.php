@@ -1,6 +1,6 @@
 <?php
 const INCLUDED = __FILE__;
-
+const NCURRENT = 2;
 require_once "index.php";
 
 ob_start($res);
@@ -84,6 +84,9 @@ ob_start($res);
 					width: auto;
 				}
 			}
+			.old-version, #new-toggle {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -101,7 +104,7 @@ ob_start($res);
 			<?php if (!empty($package)) : $versions = package_versions($package); ?>
 
 			<h2><?= htmlspecialchars($package) ?></h2>
-			<table class="table table-full">
+			<table class="table table-full versions">
 				<thead>
 					<tr>
 						<th class="text-left" colspan="2">Package</th>
@@ -112,9 +115,9 @@ ob_start($res);
 				</thead>
 				<tbody>
 
-					<?php foreach (array_reverse($versions) as $version => $phars) : ?>
+					<?php $i = 0; foreach (array_reverse($versions) as $version => $phars) : ++$i; ?>
 						<?php foreach (array_map("array_values", $phars) as $ext => list($phar, $date, $size, $pharext)) : ?>
-					<tr>
+					<tr <?php if ($i > NCURRENT) : ?>class="old-version"<?php endif; ?> <?php if ($i === NCURRENT) : ?>id="old"<?php endif; ?>>
 						<?php if (empty($ext)) : ?>
 						<td class="text-left" rowspan="<?= count($phars) ?>">
 							<?= htmlspecialchars($package) ?>
@@ -144,6 +147,14 @@ ob_start($res);
 
 				</tbody>
 			</table>
+				<?php if ($i >= 3) : ?>
+					<p class="small">
+						<a id="old-toggle" href="#old" onclick="toggleOldVersions(this)">Show
+							<?=count($versions)-NCURRENT?> older version(s) &raquo;</a>
+						<a id="new-toggle" href="#" onclick="toggleOldVersions(this)">Show
+							less versions &laquo;</a>
+					</p>
+				<?php endif; ?>
 			<?php else:	?>
 
 			<h2>Available Packages</h2>
@@ -217,6 +228,27 @@ gpg --verify <?= htmlspecialchars(basename($phar)).".asc" ?> \
 				</a>
 			</footer>
 		</div>
+		<script type="text/javascript">
+		function toggleOldVersions(a) {
+			var nodes, row_style;
+
+			if (a.hash.substring(1) === "old") {
+				row_style = "table-row";
+				document.getElementById("old-toggle").style.display = "none";
+				document.getElementById("new-toggle").style.display = "inline";
+			} else {
+				row_style = "none";
+				document.getElementById("old-toggle").style.display = "inline";
+				document.getElementById("new-toggle").style.display = "none";
+			}
+
+			nodes = document.querySelectorAll("table.versions>tbody>tr.old-version");
+
+			for (var i = 0; i < nodes.length; ++i) {
+				nodes.item(i).style.display = row_style;
+			}
+		}
+		</script>
 	</body>
 </html>
 <?php
