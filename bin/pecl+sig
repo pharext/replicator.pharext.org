@@ -72,9 +72,8 @@ function work($url, $dir) {
 
 if (($sxe = simplexml_load_file("https://pecl.php.net/feeds/$what.rss"))) {
 	foreach ($sxe->item as $item) {
-		$url = str_replace("http://", "https://", (string) $item->link);
-		$pkg = basename(dirname($url));
-		$ver = basename($url);
+		list($pkg, $ver) = explode(" ", (string) $item->title);
+		$url = sprintf("https://pecl.php.net/get/%s/%s", $pkg, $ver);
 		$skp = sprintf("%s/../skip/%s/%s", __DIR__, $pkg, $ver);
 		$ext = sprintf("%s/../public/phars/%s/%s-%s.ext.phar", __DIR__, $pkg, $pkg, $ver);
 		$dir = dirname($ext);
