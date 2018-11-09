@@ -30,7 +30,7 @@ if (($pwd = getenv("REPLICATOR_PWD"))) {
 	$stream = STDIN;
 }
 
-$proc = proc_open("gpg --batch --no-tty -a --detach-sign --passphrase-fd 3 --output $dir/$basename.asc $src", [
+$proc = proc_open("gpg --batch --pinentry-mode loopback --no-tty -a --detach-sign --passphrase-fd 3 --output $dir/$basename.asc $src", [
 	["pipe", "r"],
 	["pipe", "w"],
 	["file", $log, "a"],
