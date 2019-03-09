@@ -4,6 +4,7 @@ const NCURRENT = 2;
 require_once "index.php";
 
 ob_start($res);
+$res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/concise.min.css>; rel=preload; as=style");
 
 ?>
 <!doctype html>
