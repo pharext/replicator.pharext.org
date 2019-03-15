@@ -88,6 +88,9 @@ $res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/conci
 			.old-version, #new-toggle {
 				display: none;
 			}
+			.package-description {
+				white-space: pre-line;
+			}
 		</style>
 	</head>
 	<body>
@@ -102,9 +105,14 @@ $res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/conci
 		</div>
 		<div class="container">
 
-			<?php if (!empty($package)) : $versions = package_versions($package); ?>
+			<?php if (!empty($package)) : $versions = package_versions($package); $info = package_info($package); ?>
 
 			<h2><?= htmlspecialchars($package) ?></h2>
+			<?php if ($info) : ?>
+				<h3><?= htmlspecialchars($info["title"]) ?><br>
+					<small>License: <?= htmlspecialchars($info["license"]) ?></small></h3>
+				<p class="package-description"><?= htmlspecialchars($info["description"]) ?></p>
+			<?php endif; ?>
 			<table class="table table-full versions">
 				<thead>
 					<tr>

@@ -30,6 +30,13 @@ function sign($pkg, $ext) {
 	}
 }
 
+function info($pkg, $dir) {
+	$inf = file_get_contents("https://pecl.php.net/rest/p/$pkg/info.xml");
+	if ($inf) {
+		file_put_contents("$dir/info.xml", $inf);
+	}
+}
+
 function wait(&$pids) {
 	$status = null;
 	switch ($pid = pcntl_wait($status)) {
@@ -84,6 +91,7 @@ if (($sxe = simplexml_load_file("https://pecl.php.net/feeds/$what.rss"))) {
 					exit;
 				case 0:
 					work($url, $dir);
+					info($pkg, $dir);
 					exit;
 				default:
 					$pids[$pid] = compact("url", "pkg", "ver", "skp", "ext", "dir");

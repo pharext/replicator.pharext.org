@@ -41,6 +41,13 @@ function wait(&$pids) {
 	return $pid > 0;
 };
 
+function info($pkg, $dir) {
+    $inf = file_get_contents("https://pecl.php.net/rest/p/$pkg/info.xml");
+    if ($inf) {
+        file_put_contents("$dir/info.xml", $inf);
+    }
+}
+
 function work($url, $dir) {
 	is_dir($dir) || mkdir($dir, 0777, true);
 	require_once __DIR__."/../vendor/autoload.php";
@@ -69,6 +76,7 @@ if (($sxe = simplexml_load_file("http://pecl.php.net/feeds/$what.rss"))) {
 					exit;
 				case 0:
 					work($url, $dir);
+					info($pgk, $dir);
 					exit;
 				default:
 					$pids[$pid] = compact("url", "pkg", "ver", "skp", "ext", "dir");

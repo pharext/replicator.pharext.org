@@ -66,6 +66,16 @@ function package_versions($package) {
 	return $versions;
 }
 
+function package_info($package) {
+	if (($xml = simplexml_load_file("phars/$package/info.xml"))) {
+		return [
+			"title" => (string) $xml->s, 
+			"description" => (string) $xml->d,
+			"license" => (string) $xml->l
+		];
+	}
+}
+
 $packages = array_map("basename", glob("phars/*", GLOB_NOSORT|GLOB_ONLYDIR));
 sort($packages, SORT_NATURAL|SORT_FLAG_CASE);
 
