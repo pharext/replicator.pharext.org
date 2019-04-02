@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+if ($argc < 2) {
+	fprintf(STDERR, "Usage: %s <pkg_name> [.ext.phar command line options]\n", $argv[0]);
+	exit(1);
+}
+
+function bail() {
+	$error = error_get_last();
+	if (!($error["type"] & error_reporting())) {
+		fprintf(STDERR, "%s\n", $error["message"]);
+	}
+	exit(2);
+}
+
+$cmp_mask = Phar::canCompress(Phar::GZ) | (Phar::canCompress(Phar::BZ2) << 1);
+$file_ext = ["", ".gz", ".bz2", ".bz2"][$cmp_mask];
+$base_url = "https://replicator.pharext.org/";
+$json_ctx = stream_context_create(["http"=>["header"=>"Accept:application/json"]]) or bail();
+$pkg_name = $argv[1];
+$pkg_json = file_get_contents($base_url . "?" . $pkg_name, false, $json_ctx) or bail();
+$pkg_data = json_decode($pkg_json, true) or bail();
+$rel_data = end($pkg_data);
+$pkg_path = $rel_data[$file_ext]["phar"];
+$sig_path = $rel_data[$file_ext]["sigs"]["rsa"];
+$pkg_file = basename($pkg_path);
+$pkg_data = file_get_contents($base_url . $pkg_path) or bail();
+$sig_data = file_get_contents($base_url . $sig_path) or bail();
+$key_data = file_get_contents($base_url . "replicator.pub") or bail();
+
+openssl_verify($pkg_data, $sig_data, $key_data, "sha256") or
+	(function() {
+		while (($error = openssl_error_string())) echo $error,"\n";
+		exit(3);
+	})();
+
+$argv = array_slice($argv, 1, --$argc);
+file_put_contents($pkg_file, $pkg_data) or bail();
+(include $pkg_file) or bail();
