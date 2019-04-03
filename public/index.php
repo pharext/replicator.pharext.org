@@ -35,25 +35,34 @@ function sigof($phar, $typ) {
 
 function package_versions($package) {
 	$versions = [];
-	foreach (glob("phars/$package/*.ext.phar*") as $phar) {
-		list($name, $enc) = explode(".ext.phar", basename($phar));
+	foreach (glob("phars/$package/*.ext.phar") as $phar) {
+		$name = basename($phar, ".ext.phar");
 		$data = new Phar($phar);
 		$meta = $data->getMetadata();
+		unset($data);
+
 		if ($meta) {
 			$release = $meta["release"];
 		} else {
 			$release = substr($name, strlen($package)+1);
 		}
 
-		foreach (SIGS as $sigtyp => $sigext) {
-			if (file_exists($sigdat = sigof($phar, $sigext))) {
-				$sigs[$sigtyp] = $sigdat;
+		foreach (["", ".gz", ".bz2"] as $enc) {
+			$file = $phar . $enc;
+			if (!is_file($file)) {
+				continue;
 			}
+
+			foreach (SIGS as $sigtyp => $sigext) {
+				if (file_exists($sigdat = sigof($file, $sigext))) {
+					$sigs[$sigtyp] = $sigdat;
+				}
+			}
+			$size = filesize($file);
+			$date = isset($meta["date"]) ? strtotime($meta["date"]) : filemtime($file);
+			$pharext = isset($meta["version"]) ? $meta["version"] : "2.0.1";
+			$versions[$release][$enc] = ["phar" => $file] + compact("date", "size", "pharext", "sigs");
 		}
-		$size = filesize($phar);
-		$date = isset($meta["date"]) ? strtotime($meta["date"]) : filemtime($phar);
-		$pharext = isset($meta["version"]) ? $meta["version"] : "2.0.1";
-		$versions[$release][$enc] = compact("phar", "date", "size", "pharext", "sigs");
 		uksort($versions[$release], function($a, $b) {
 			$al = strlen($a);
 			$bl = strlen($b);
