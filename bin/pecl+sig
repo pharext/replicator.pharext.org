@@ -31,6 +31,7 @@ function sign($pkg, $ext) {
 }
 
 function info($pkg, $dir) {
+	$pkg = strtolower($pkg);
 	$inf = file_get_contents("https://pecl.php.net/rest/p/$pkg/info.xml");
 	if ($inf) {
 		file_put_contents("$dir/info.xml", $inf);
