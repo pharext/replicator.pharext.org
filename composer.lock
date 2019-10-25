@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "6536f75724f1b6738b441c05cd7d65e5",
+    "content-hash": "2e525b6f6c89f800417e10dca495fbeb",
     "packages": [
         {
             "name": "concisecss/concise.css",
@@ -47,20 +47,20 @@
                 "scss",
                 "web"
             ],
-            "time": "2015-02-17 06:23:04"
+            "time": "2015-02-17T06:23:04+00:00"
         },
         {
             "name": "m6w6/pharext",
-            "version": "v4.1.1",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/m6w6/pharext.git",
-                "reference": "03f7c23b5401098e1c157cc0d36628dc449901ea"
+                "url": "https://github.com/pharext/pharext.git",
+                "reference": "ab3dad846161d248f3c426ebc545cc6eb02fb5bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/m6w6/pharext/zipball/03f7c23b5401098e1c157cc0d36628dc449901ea",
-                "reference": "03f7c23b5401098e1c157cc0d36628dc449901ea",
+                "url": "https://api.github.com/repos/pharext/pharext/zipball/ab3dad846161d248f3c426ebc545cc6eb02fb5bc",
+                "reference": "ab3dad846161d248f3c426ebc545cc6eb02fb5bc",
                 "shasum": ""
             },
             "bin": [
@@ -76,6 +76,9 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
             "license": [
                 "BSD-2-Clause"
             ],
@@ -87,7 +90,7 @@
                 "package",
                 "phar"
             ],
-            "time": "2015-09-03 15:12:31"
+            "time": "2019-09-10T13:18:30+00:00"
         }
     ],
     "packages-dev": [],
