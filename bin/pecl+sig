@@ -24,10 +24,11 @@ function fail($pkg, $ver, $skp, $fmt) {
 }
 
 function sign($pkg, $ext) {
-	$fmt = "%s/%s-sign %s %s%s";
+	$fmt = "%s/%s-%s %s %s%s";
 	foreach (["rsa", "gpg"] as $sig) {
 		foreach (["", ".gz", ".bz2"] as $typ) {
-			passthru(sprintf($fmt, __DIR__, $sig, $pkg, $ext, $typ));
+			passthru(sprintf($fmt, __DIR__, $sig, "sign", $pkg, $ext, $typ));
+			passthru(sprintf($fmt, __DIR__, $sig, "vrfy", $pkg, $ext, $typ));
 		}
 	}
 }

@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+ini_set("error_reporting", E_ALL);
+ini_set("display_errors", true);
+
+if ($argc != 3) {
+	fprintf(STDERR, "Usage: %s <pkg name> <phar path>\n\n", basename($argv[0]));
+	exit(1);
+}
+
+list(, $pkg, $src) = $argv;
+$basename = basename($src);
+$dir = __DIR__."/../public/sigs/$pkg";
+
+$cmd = sprintf("gpg --verify %s/%s.asc %s", $dir, $basename, $src);
+passthru($cmd);
