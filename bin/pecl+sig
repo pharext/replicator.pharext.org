@@ -86,7 +86,7 @@ if (($sxe = simplexml_load_file("https://pecl.php.net/feeds/$what.rss"))) {
 		list($pkg, $ver) = explode(" ", (string) $item->title);
 		$url = sprintf("https://pecl.php.net/get/%s/%s", $pkg, $ver);
 		$skp = sprintf("%s/../skip/%s/%s", __DIR__, $pkg, $ver);
-		$ext = sprintf("%s/../public/phars/%s/%s-%s.ext.phar", __DIR__, $pkg, $pkg, $ver);
+		$ext = sprintf("%s/../public/phars/%s/%s-%s.ext.phar", __DIR__, $pkg, strtolower($pkg), $ver);
 		$dir = dirname($ext);
 
 		if (!is_file($skp) && !is_file($ext)) {
