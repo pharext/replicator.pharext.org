@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e525b6f6c89f800417e10dca495fbeb",
+    "content-hash": "7e02429fd2086d9c83037b7b8bdeedac",
     "packages": [
         {
             "name": "concisecss/concise.css",
@@ -51,16 +51,16 @@
         },
         {
             "name": "m6w6/pharext",
-            "version": "v4.1.2",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pharext/pharext.git",
-                "reference": "ab3dad846161d248f3c426ebc545cc6eb02fb5bc"
+                "reference": "3ddde241c41d56beadc932c2eb3d580f50622a8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pharext/pharext/zipball/ab3dad846161d248f3c426ebc545cc6eb02fb5bc",
-                "reference": "ab3dad846161d248f3c426ebc545cc6eb02fb5bc",
+                "url": "https://api.github.com/repos/pharext/pharext/zipball/3ddde241c41d56beadc932c2eb3d580f50622a8e",
+                "reference": "3ddde241c41d56beadc932c2eb3d580f50622a8e",
                 "shasum": ""
             },
             "bin": [
@@ -90,7 +90,7 @@
                 "package",
                 "phar"
             ],
-            "time": "2019-09-10T13:18:30+00:00"
+            "time": "2020-09-26T07:25:44+00:00"
         }
     ],
     "packages-dev": [],
