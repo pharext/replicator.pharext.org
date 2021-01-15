@@ -1,10 +1,14 @@
 <?php
 const INCLUDED = __FILE__;
 const NCURRENT = 2;
+
+$css = "concise/css/concise.min.css";
+$fnt = "//fonts.googleapis.com/css?family=Droid+Sans";
+
 require_once "index.php";
 
 ob_start($res);
-$res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/concise.min.css>; rel=preload; as=style");
+$res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel=preload; as=style");
 
 ?>
 <!doctype html>
@@ -12,8 +16,8 @@ $res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/conci
 	<head>
 		<meta charset="utf-8">
 		<title>Replicator</title>
-		<link rel="stylesheet" href="concise/css/concise.min.css">
-		<link href="//fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="<?=$css?>">
+		<link rel="stylesheet" href="<?=$fnt?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 			body {
@@ -91,6 +95,17 @@ $res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/conci
 			.package-description {
 				white-space: pre-line;
 			}
+			form * {
+				display: inline-block;
+				margin-right: 1em;
+			}
+			form label input{
+				margin-left: 1em;
+				vertical-align: middle;
+			}
+			form input[type=reset] {
+				padding: 0;
+			}
 		</style>
 	</head>
 	<body>
@@ -167,16 +182,17 @@ $res->addHeader("Link", "<".dirname((new http\Env\Url)->path)."concise/css/conci
 			<?php else:	?>
 
 			<h2>Available Packages</h2>
-			<ul class="list-inline">
+			<form name="search"></form>
+			<ul class="list-inline package-list">
 			<?php foreach (array_map("htmlspecialchars", $packages) as $index => $pkg) : ?>
 				<?php $next = strtolower($pkg{0}); ?>
 				<?php if (isset($prev) && $next != $prev) : ?>
 
 			</ul>
-			<ul class="list-inline">
+			<ul class="list-inline package-list">
 				<?php endif; ?>
 
-				<li><a href="?<?= $pkg ?>"><?=  $pkg ?></a></li>
+				<li id="<?= strtolower($pkg) ?>"><a href="?<?= $pkg ?>"><?=  $pkg ?></a></li>
 				<?php $prev = $next; ?>
 			<?php endforeach; ?>
 
@@ -238,6 +254,90 @@ gpg --verify <?= htmlspecialchars(basename($phar)).".asc" ?> \
 			</footer>
 		</div>
 		<script type="text/javascript">
+		function searchPackages(search, regex) {
+			console.log("searchPackages", search, regex);
+			document.querySelectorAll("ul.package-list li").forEach(function(li) {
+				if (regex) {
+					if (li.id.match(search.toLowerCase())) {
+						li.style.removeProperty("display");
+					} else {
+						li.style.display = "none";
+					}
+				} else {
+					if (li.id.startsWith(search.toLowerCase())) {
+						li.style.removeProperty("display");
+					} else {
+						li.style.display = "none";
+					}
+				}
+			});
+		}
+		
+		document.body.onload = function() {
+			var form = document.querySelector("form[name=search]");
+			var input = document.createElement("input");
+			var reset = document.createElement("input");
+			var prefix_label = document.createElement("label");
+			var prefix = document.createElement("input");
+			var regex_label = document.createElement("label");
+			var regex = document.createElement("input");
+
+			form.onreset = function() {
+				searchPackages("", false);
+			};
+			
+			input.id = "s";
+			input.autocomplete = "off";
+			input.name = "s";
+			input.type = "search";
+			input.placeholder = "Search...";
+			input.oninput = function() {
+				searchPackages(input.value, regex.checked);
+			};
+			input.style.paddingRight = "4ch";
+			form.appendChild(input);
+
+			reset.id = "r";
+			reset.name = "r";
+			reset.type = "reset";
+			reset.value = "☒";
+			reset.title = "Reset";
+			reset.style.marginLeft = "-4ch";
+			reset.style.marginRight = "4ch";
+			reset.style.border = "none";
+			reset.style.background = "transparent";
+			form.appendChild(reset);
+
+			prefix.id = "prefix";
+			prefix.name = "by";
+			prefix.value = "prefix";
+			prefix.type = "radio";
+			prefix.defaultChecked = true;
+			prefix.checked = true;
+			prefix.onchange = function() {
+				searchPackages(input.value, regex.checked);
+			};
+			//form.appendChild(prefix);
+			prefix_label.innerText = "by Prefix";
+			prefix_label.appendChild(prefix);
+			form.appendChild(prefix_label);
+
+			regex.id = "regex";
+			regex.name = "by";
+			regex.value = "regex";
+			regex.type = "radio";
+			regex.checked = false;
+			regex.onchange = function() {
+				searchPackages(input.value, regex.checked);
+			};
+			//form.appendChild(regex);
+			regex_label.innerText = "by RegExp";
+			regex_label.appendChild(regex);
+			form.appendChild(regex_label);
+
+			input.focus();
+		};
+
 		function toggleOldVersions(a) {
 			var nodes, row_style;
 
