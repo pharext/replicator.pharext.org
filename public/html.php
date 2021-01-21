@@ -92,7 +92,7 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			.old-version, #new-toggle {
 				display: none;
 			}
-			.package-description {
+			p.package-description, div.package-description p {
 				white-space: pre-line;
 			}
 			form * {
@@ -125,8 +125,22 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			<h2><?= htmlspecialchars($package) ?></h2>
 			<?php if ($info) : ?>
 				<h3><?= htmlspecialchars($info["title"]) ?><br>
-					<small>License: <?= htmlspecialchars($info["license"]) ?></small></h3>
-				<p class="package-description"><?= htmlspecialchars($info["description"]) ?></p>
+					<small>License: <?= htmlspecialchars($info["license"]) ?><br>
+						<a href="//pecl.php.net/package/<?= htmlspecialchars($package) ?>">View at PECL</a></small></h3>
+				<?php if (extension_loaded("discount")) : ?>
+				<div class="package-description">
+					<?php
+					$md = MarkdownDocument::createFromString($info["description"]);
+					$md->compile(	MarkdownDocument::AUTOLINK |
+									MarkdownDocument::ONE_COMPAT);
+					echo $md->getHtml();
+					?>
+				</div>
+				<?php else : ?>
+				<p class="package-description">
+					<?= htmlspecialchars($info["description"]) ?>
+				</p>
+				<?php endif; ?>
 			<?php endif; ?>
 			<table class="table table-full versions">
 				<thead>
@@ -185,7 +199,7 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			<form name="search"></form>
 			<ul class="list-inline package-list">
 			<?php foreach (array_map("htmlspecialchars", $packages) as $index => $pkg) : ?>
-				<?php $next = strtolower($pkg{0}); ?>
+				<?php $next = strtolower($pkg[0]); ?>
 				<?php if (isset($prev) && $next != $prev) : ?>
 
 			</ul>
