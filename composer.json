@@ -1,7 +1,7 @@
 {
     "require": {
         "concisecss/concise.css": "~2.1",
-        "m6w6/pharext": "^4"
+        "m6w6/pharext": "^4.0"
     },
 	"autoload": {
 		"psr-0": {
