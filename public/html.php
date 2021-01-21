@@ -8,7 +8,7 @@ $fnt = "//fonts.googleapis.com/css?family=Droid+Sans";
 require_once "index.php";
 
 ob_start($res);
-$res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel=preload; as=style");
+$res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . "/" . $css . ">; rel=preload; as=style");
 
 ?>
 <!doctype html>
@@ -19,6 +19,7 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 		<link rel="stylesheet" href="<?=$css?>">
 		<link rel="stylesheet" href="<?=$fnt?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="dark light">
 		<style>
 			body {
 				padding-bottom: 2em;
@@ -36,12 +37,11 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			}
 			.header, .footer {
 				position: fixed;
-				box-shadow: 0px 0px .8em .4em #89a;
-				background: #62B3E7;
 				padding: .5em 0;
 			}
 			.header h1 {
 				font-weight: bold;
+				line-height:120%;
 			}
 			.header h1 a, .footer a:hover {
 				text-decoration: none;
@@ -53,14 +53,8 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 				/* normalize browser difference */
 				font-size: 1.3em;
 			}
-			.header h1 a, .footer, .footer a {
-				color: #fdfdfd;
-				text-shadow: grey 0 0 .1em;
-			}
 			.header h1 small {
-				color: #666;
 				font-size: 1.3rem;
-				text-shadow: white 0 0 .2em;
 			}
 			li {
 				list-style-type: circle;
@@ -83,6 +77,9 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			.row>h3 {
 				margin-bottom: 0;
 			}
+			hr {
+				margin: 2em 0;
+			}
 			@media(max-width: 80em) {
 				.column-8 {
 					float: none;
@@ -95,6 +92,10 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			p.package-description, div.package-description p {
 				white-space: pre-line;
 			}
+			.package-list {
+			}
+			.package-ch {
+			}
 			form * {
 				display: inline-block;
 				margin-right: 1em;
@@ -105,6 +106,36 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 			}
 			form input[type=reset] {
 				padding: 0;
+			}
+			.header, .footer {
+				box-shadow: 0px 0px .8em .4em #89a;
+				background: #62B3E7;
+			}
+			.header h1 a, .footer, .footer a {
+				color: #fdfdfd;
+				text-shadow: grey 0 0 .1em;
+			}
+			.header h1 small {
+				color: #666;
+				text-shadow: white 0 0 .2em;
+			}
+			@media (prefers-color-scheme: dark) {
+				.header, .footer {
+					box-shadow: 0px 0px .8em .4em #123;
+					background: #305872;
+				}
+				.header h1 a, .footer, .footer a {
+					color: #bdbdbd;
+					text-shadow: dimgrey 0 0 .1em;
+				}
+				.header h1 small {
+					color: #aaa;
+					text-shadow: black 0 0 .2em;
+				}
+				body, h2, h3, h4, h5, h6 {
+					background: #3a3b3f;
+					color: #bdbdbd;
+				}
 			}
 		</style>
 	</head>
@@ -193,6 +224,7 @@ $res->addHeader("Link", "<" . dirname((new http\Env\Url)->path) . $css . ">; rel
 							less versions &laquo;</a>
 					</p>
 				<?php endif; ?>
+
 			<?php else:	?>
 
 			<h2>Available Packages</h2>
@@ -286,9 +318,12 @@ gpg --verify <?= htmlspecialchars(basename($phar)).".asc" ?> \
 				}
 			});
 		}
-		
+
 		document.body.onload = function() {
 			var form = document.querySelector("form[name=search]");
+
+			if (!form) return;
+
 			var input = document.createElement("input");
 			var reset = document.createElement("input");
 			var prefix_label = document.createElement("label");
@@ -299,7 +334,7 @@ gpg --verify <?= htmlspecialchars(basename($phar)).".asc" ?> \
 			form.onreset = function() {
 				searchPackages("", false);
 			};
-			
+
 			input.id = "s";
 			input.autocomplete = "off";
 			input.name = "s";
@@ -348,6 +383,8 @@ gpg --verify <?= htmlspecialchars(basename($phar)).".asc" ?> \
 			regex_label.innerText = "by RegExp";
 			regex_label.appendChild(regex);
 			form.appendChild(regex_label);
+
+			form.after(document.createElement("HR"));
 
 			input.focus();
 		};
